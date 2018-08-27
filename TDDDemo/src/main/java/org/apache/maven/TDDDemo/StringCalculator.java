@@ -6,31 +6,30 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class StringCalculator {
-	
-	private Logger logger =Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
+	private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public Integer addString(String input) {
-        Integer sum = 0;
-        String delimeter=null;
-        if(input.startsWith("//")){
-              delimeter = input.substring(2,3);
-              input=input.substring(input.indexOf("\n")+1);
-            
-        }
-        if (input.length() != 0) {
-              List<String> listOfNumbers = Arrays.asList(input.split("\n|,|"+delimeter));
-             
-              sum =  listOfNumbers.stream().map(number -> Integer.parseInt(number)).filter(n->n<=1000)
-                          .collect(Collectors.reducing((firstNumber, secondNumber) -> firstNumber + secondNumber)).get();
-              
-              
-        }
-        logger.info(sum.toString());
-        return sum;
+		Integer sum = 0;
+		String delimeter = null;
+		if (input.startsWith("//")) {
+			delimeter = input.substring(2, 3);
+			input = input.substring(input.indexOf("\n") + 1);
+		}
+		if (input.length() != 0) {
+			List<String> listOfNumbers = Arrays.asList(input.split("\n|,|" + delimeter));
+			List ListOfNegativeNumber = listOfNumbers.stream().filter(n -> Integer.valueOf(n) < 0)
+					.collect(Collectors.toList());
 
-      
+			if (ListOfNegativeNumber.size() != 0) {
+				throw new RuntimeException("Number is Negative " + ListOfNegativeNumber);
+			} else
+				sum = listOfNumbers.stream().map(number -> Integer.parseInt(number)).filter(n -> n <= 1000)
+						.collect(Collectors.reducing((firstNumber, secondNumber) -> firstNumber + secondNumber)).get();
 
-       
- }
+		}
+		logger.info(sum.toString());
+		return sum;
+
+	}
 }
- 

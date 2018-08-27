@@ -66,9 +66,15 @@ public class CalculatorTest {
 	@Test
 	public void shouldReturnSumUsingLogger(){
 		Mockito.doNothing().when(logger).info("5");
-		int actual = stringCalculator.addString("//;\n2;3");
+		stringCalculator.addString("//;\n2;3");
 		Mockito.verify(logger).info("5");
 		
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void shouldReturnExceptionWhenNegativeNumberasInput(){
+		//Mockito.when(stringCalculator.addString("3,-5,6,-9")).thenThrow(new NegativeNumberException("Negative Numbers are not allowed.."));
+		stringCalculator.addString("3,-5,6,-9");
 	}
 	
 }
